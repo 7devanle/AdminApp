@@ -25,13 +25,18 @@ public class Student {
     @ColumnInfo(name = "name")
     private String name;
     private int photo;
+    @NotNull
     private String location;
     @NotNull
     private String department;
     @NotNull
     private String faculty;
 
-    private Boolean blackListed;
+    private int blackListed;
+
+    public void setBlackListed(int blackListed) {
+        this.blackListed = blackListed;
+    }
 
     public Student(String name, String location, int photo, String department, String faculty) {
         this.matNo = "SOOL"+getId();
@@ -40,7 +45,7 @@ public class Student {
         this.photo = photo;
         this.department = department;
         this.faculty = faculty;
-        this.blackListed = false;
+        this.blackListed = 0;
     }
 
     @Ignore
@@ -52,13 +57,13 @@ public class Student {
         this.photo = photo;
         this.department = department;
         this.faculty = faculty;
-        this.blackListed = false;
+        this.blackListed = 0;
     }
     public void setBlackList(){
-        if(this.blackListed == true)
-            this.blackListed = false;
+        if(this.blackListed == 1)
+            this.blackListed = 0;
         else
-            this.blackListed = true;
+            this.blackListed = 1;
     }
 
     public int getId() {
@@ -118,12 +123,9 @@ public class Student {
         this.id = id;
     }
 
-    public Boolean getBlackListed() {
+    public int getBlackListed() {
         return blackListed;
     }
 
-    public void setBlackListed() {
-        this.blackListed = !blackListed;
-    }
 }
 

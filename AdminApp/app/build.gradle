@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.adminapp"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -62,4 +62,8 @@ dependencies {
     //Room database
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //import library
+    implementation "org.apache.poi:poi:5.2.4"
+
 }

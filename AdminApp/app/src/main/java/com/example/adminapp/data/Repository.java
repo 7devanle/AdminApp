@@ -1,11 +1,11 @@
 package com.example.adminapp.data;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.adminapp.dao.AdminDao;
-import com.example.adminapp.dao.StudentDao;
 import com.example.adminapp.entities.Admin;
 import com.example.adminapp.entities.Student;
 
@@ -14,21 +14,20 @@ import java.util.List;
 public class Repository {
     AdminDao adminDao;
     private LiveData<List<Admin>> allAdmins;
-    StudentDao studentDao;
-
     public Repository(Application application) {
-        Database database = Database.getInstance(application);
-        studentDao = database.studentRepo();
-        adminDao = database.adminRepo();
+        AdminDatabase adminDatabase = AdminDatabase.getInstance(application);
+        //studentDao = adminDatabase.studentDao();
+        adminDao = adminDatabase.adminDao();
         allAdmins = adminDao.getAllAdmins();
 
     }
 
     public void insertAdmin(Admin admin) {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.insert(admin));
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.insert(admin));
     }
 
     public String login(Admin admin) {
+        //Log.i("ADMINS", getAllAdmins().getValue().toString());;
         Admin availableAdmin = adminDao.getAdmin(admin.getUsername()).getValue();
         if (availableAdmin != null && admin.getPassword().equals(availableAdmin.getPassword())) {
             return "logged";
@@ -37,11 +36,11 @@ public class Repository {
     }
 
     public void update(Admin admin) {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.update(admin));
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.update(admin));
     }
 
     public void delete(Admin admin) {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.delete(admin));
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.delete(admin));
     }
 
     public LiveData<List<Admin>> getAllAdmins(){
@@ -52,52 +51,53 @@ public class Repository {
         return adminDao.getAdmin(admin_name);
     }
 
-//    public LiveData<Admin> getAdmin(int adminId) {
-//        return adminRepo.getAdmin(adminId);
-//    }
+    public LiveData<Admin> getAdmin(int adminId) {
+        return adminDao.getAdmin(adminId);
+    }
 
     public void insert(Student student) {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> studentDao.insert(student));
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.insert(student));
     }
 
     public void update(Student student) {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> studentDao.update(student));
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.update(student));
     }
 
     public void delete(Student student) {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> studentDao.delete(student));
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.delete(student));
     }
 
     public void blacklist(Student student){
-
+        student.setBlackList();
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.update(student));
     }
 
     public void deleteAllStudents() {
-        Database.DATABASE_WRITE_EXECUTOR.execute(() -> studentDao.deleteAllStudents());
+        AdminDatabase.DATABASE_WRITE_EXECUTOR.execute(() -> adminDao.deleteAllStudents());
     }
 
     public LiveData<List<Student>> getAllStudents() {
-        return studentDao.getAllStudents();
+        return adminDao.getAllStudents();
     }
 
     public LiveData<List<Student>> getBlacklisted() {
-        return studentDao.getBlacklisted();
+        return adminDao.getBlacklisted();
     }
 
     public LiveData<List<Student>> getNonBlacklisted() {
-        return studentDao.getNonBlacklisted();
+        return adminDao.getNonBlacklisted();
     }
 
     public LiveData<Student> getStudent(String student_mat) {
-        return studentDao.getStudent(student_mat);
+        return adminDao.getStudent(student_mat);
     }
 
     public LiveData<Student> searchStudent(String query) {
-        return studentDao.searchStudent(query);
+        return adminDao.searchStudent(query);
     }
 
     public LiveData<Student> getStudent(int id) {
-        return studentDao.getStudent(id);
+        return adminDao.getStudent(id);
     }
 
 }

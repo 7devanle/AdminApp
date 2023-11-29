@@ -52,9 +52,6 @@ public class Admin {
         else
             System.out.println("Wrong password");
     }
-    public void blacklistStudent(Student student){
-        student.setBlackListed();
-    }
 
 
 }

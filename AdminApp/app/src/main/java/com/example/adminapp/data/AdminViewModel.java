@@ -11,11 +11,11 @@ import com.example.adminapp.entities.Student;
 
 import java.util.List;
 
-public class ViewModel extends AndroidViewModel {
+public class AdminViewModel extends AndroidViewModel {
 
     Repository adminRepository;
     private LiveData<List<Admin>> allAdmins;
-    public ViewModel(@NonNull Application application) {
+    public AdminViewModel(@NonNull Application application) {
         super(application);
         adminRepository = new Repository(application);
         allAdmins = adminRepository.getAllAdmins();
@@ -41,9 +41,9 @@ public class ViewModel extends AndroidViewModel {
         return adminRepository.getAdmin(admin_name);
     }
 
-//    public LiveData<Admin> getAdmin(int adminId) {
-//        return adminRepository.getAdmin(adminId);
-//    }
+    public LiveData<Admin> getAdmin(int adminId) {
+        return adminRepository.getAdmin(adminId);
+    }
 
     public void insert(Student student) {
         adminRepository.insert(student);
@@ -51,6 +51,10 @@ public class ViewModel extends AndroidViewModel {
 
     public void update(Student student) {
         adminRepository.update(student);
+    }
+
+    public void blacklist(Student student){
+        adminRepository.blacklist(student);
     }
 
     public void delete(Student student) {
